@@ -10,3 +10,9 @@ Duration: 4 years
 Scholarship Approved for ID: 1001
 Percentage: 50%
 Duration: 4 years
+Scholarship Approved for ID: 1001
+Percentage: 50%
+Duration: 4 years
+Scholarship Approved for ID: 1001
+Percentage: 50%
+Duration: 4 years

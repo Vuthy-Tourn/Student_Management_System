@@ -11,14 +11,11 @@ void Login();
 void MainMenu();
 void StudentManagement();
 void Registration();
-void NewStudent();
 // void ReturningStudent();
 // void ScholarshipStudents();
 void ApplyForScholarship();
 void ProcessStudentPayment();
-void ShowPaymentDetails(Student& student);
 void IncomeAndExpense();
-void Invoice();
 void ABOUTUS();
 
 int main()
@@ -98,14 +95,14 @@ void Login()
             delay(500);
             int a = 219;
             int i;
-            gotoxy(68, 34);
+            gotoxy(66, 34);
             foreColor(2);
             for (i = 0; i < 30; i++)
             {
-                cout << a;
+                cout << (char)a;
                 delay(100);
             }
-            delay(500);
+            delay(700);
             system("cls");
             MainMenu();
         }
@@ -159,8 +156,8 @@ void MainMenu()
         cout << "REGISTRATION";
         gotoxy(80, 16);
         cout << "PAYMENT";
-        gotoxy(80, 18);
-        cout << "INVOICE";
+        gotoxy(77, 18);
+        cout << "APPLY SCHOLARSHIP";
         gotoxy(80, 20);
         cout << "ABOUT US";
         gotoxy(77, 22);
@@ -191,8 +188,8 @@ void MainMenu()
         if (x == 3)
         {
             foreColor(4);
-            gotoxy(80, 18);
-            cout << "INVOICE";
+            gotoxy(77, 18);
+            cout << "APPLY SCHOLARSHIP";
         }
         if (x == 4)
         {
@@ -261,7 +258,7 @@ void MainMenu()
         case 3:
         {
             cls();
-            Invoice();
+            ApplyForScholarship();
         }
         break;
         case 4:
@@ -403,7 +400,7 @@ void StudentManagement(){
                 cover();
                 chooseSearch();
             } while (getch() != 27);
-            NewStudent();
+            StudentManagement();
         }
         break;
         case 2:
@@ -418,7 +415,7 @@ void StudentManagement(){
                 cover();
                 chooseUpdate();
             } while (getch() != 27);
-            NewStudent();
+            StudentManagement();
         }
         break;
         case 3:
@@ -433,13 +430,13 @@ void StudentManagement(){
                 cover();
                 chooseDelete();
             } while (getch() != 27);
-            NewStudent();
+            StudentManagement();
         }
         break;
         case 4:
         {
             cls();
-            Registration();
+            MainMenu();
         }
         break;
         default:
@@ -452,110 +449,16 @@ void StudentManagement(){
 
 void Registration()
 {
-    int y = 0;
-    char option;
+    do
+{
     cls();
     cover();
-    BoxPatient();
-    foreColor(3);
-    ANT();
-    do
-    {
-        setcursor(false, 1);
-        foreColor(2);
-        foreColor(6);
-        gotoxy(76, 13);
-        cout << "NEW STUDENT";
-        gotoxy(76, 16);
-        cout << "RETURNING STUDENT";
-        gotoxy(76, 19);
-        cout << "APPLY SCHOLARSHIP";
-        gotoxy(76, 22);
-        cout << "BACK TO MENU";
-        foreColor(9);
-        gotoxy(68, 29);
-        cout << "<<< USE UP AND DOWN ARROW KEY >>>";
-
-        if (y == 0)
-        {
-            foreColor(4);
-            gotoxy(76, 13);
-            cout << "NEW STUDENT";
-        }
-        if (y == 1)
-        {
-            foreColor(4);
-            gotoxy(76, 16);
-            cout << "RETURNING STUDENT";
-        }
-        if (y == 2)
-        {
-            foreColor(4);
-            gotoxy(76, 19);
-            cout << "APPLY SCHOLARSHIP";
-        }
-        if (y == 3)
-        {
-            foreColor(4);
-            gotoxy(76, 22);
-            cout << "BACK TO MENU";
-        }
-
-        option = getch();
-        switch (option)
-        {
-        case 72:
-        {
-            y--;
-            if (y < 0)
-            {
-                y = 3;
-            }
-            break;
-        }
-        case 80:
-        {
-            y++;
-            if (y > 3)
-            {
-                y = 0;
-            }
-            break;
-        }
-        }
-    } while (option != 13);
-
-    do
-    {
-        switch (y)
-        {
-        case 0:
-             do
-            {
-                cls();
-                cover();
-                InsertStudent("Files\\NewStudents.bin", 1000, 0, 100);
-                cls();
-                cover();
-                chooseInsert();
-            } while (getch() != 27);
-            NewStudent();
-            break;
-        case 1:
-            // ReturningStudent();
-            break;
-        case 2:
-            ApplyForScholarship();
-            break;
-        case 3:
-            MainMenu();
-            break;
-        default:
-            cls();
-            break;
-        }
-
-    } while (1);
+    InsertStudent("Files\\NewStudents.bin", 1000, 0, 100);
+    cls();
+    cover();
+    chooseInsert();
+} while (getch() != 27);
+MainMenu();
 }
 
 void ApplyForScholarship() {
@@ -568,10 +471,11 @@ void ApplyForScholarship() {
     
     // Get student ID
     setcursor(true, 1);
-    drawBoxSingleLine(60, 4, 46, 1, 3);
-    gotoxy(61, 5); foreColor(14);
+    drawBoxSingleLine(60, 17, 46, 1, 3);
+    styelIncomeAndExpense();
+    gotoxy(61, 18); foreColor(14);
     cout << "Enter Student ID for Scholarship: ";
-    gotoxy(97, 5); studentId = inputNumber();
+    gotoxy(97, 18); studentId = inputNumber(); 
     
     // Verify student exists
     if(!VerifyStudentExists(studentId)) {
@@ -691,10 +595,11 @@ void ProcessStudentPayment() {
     
     // Get student ID
     setcursor(true, 1);
-    drawBoxSingleLine(60, 4, 46, 1, 3);
-    gotoxy(61, 5); foreColor(14);
-    cout << "Enter Student ID: ";
-    gotoxy(80, 5); studentId = inputNumber();
+    drawBoxSingleLine(60, 17, 46, 1, 3);
+    styelIncomeAndExpense();
+    gotoxy(61, 18); foreColor(14);
+    cout << "Enter Student ID for Payment: ";
+    gotoxy(95, 18); studentId = inputNumber(); 
 
     // Verify student exists
     if (!VerifyStudentExists(studentId)) {
@@ -709,7 +614,7 @@ void ProcessStudentPayment() {
     // Payment plan selection
     cls();
     cover();
-    BoxPaymentOptions();
+    BoxStaff();
     
     int y = 0;
     char option;
@@ -719,14 +624,12 @@ void ProcessStudentPayment() {
         foreColor(6);
         gotoxy(76, 13); cout << "ANNUAL PAYMENT";
         gotoxy(76, 16); cout << "SEMESTER PAYMENT";
-        gotoxy(76, 19); cout << "VIEW PAYMENT DETAILS";
-        gotoxy(76, 22); cout << "BACK TO MENU";
+        gotoxy(76, 19); cout << "BACK TO MENU";
         
         // Highlight selected option
         if (y == 0) { foreColor(4); gotoxy(76, 13); cout << "ANNUAL PAYMENT"; }
         if (y == 1) { foreColor(4); gotoxy(76, 16); cout << "SEMESTER PAYMENT"; }
-        if (y == 2) { foreColor(4); gotoxy(76, 19); cout << "VIEW PAYMENT DETAILS"; }
-        if (y == 3) { foreColor(4); gotoxy(76, 22); cout << "BACK TO MENU"; }
+        if (y == 2) { foreColor(4); gotoxy(76, 19); cout << "BACK TO MENU"; }
 
         option = getch();
         if (option == 72) y--; // Up arrow
@@ -741,7 +644,7 @@ void ProcessStudentPayment() {
             {
                student.setPaymentPlan("Annual");
                     UpdateStudentRecord(student);
-                    GeneratePaymentInvoice(student);
+                    invoiceTemplate("Files\\NewStudents.bin", studentId);
                     cls();
                     cover();
                chooseView();
@@ -753,366 +656,19 @@ void ProcessStudentPayment() {
             {
                student.setPaymentPlan("Semester");
                     UpdateStudentRecord(student);
-                    GeneratePaymentInvoice(student);
+                    invoiceTemplate("Files\\NewStudents.bin", studentId);
                     cls();
                     cover();
                chooseView();
             } while (getch() != 27);
              MainMenu();
             break;
-                case 2: // View details
-                     do
-            {
-                ShowPaymentDetails(student);
-                    cls();
-                    cover();
-               chooseView();
-            } while (getch() != 27);
-             MainMenu();
-                case 3: 
+                case 2: 
                 MainMenu();// Back to menu
                     return;
             }
         }
     } while (true);
-}
-
-
-void ShowPaymentDetails(Student& student) {
-    cls();
-    cover();
-    // BoxStaff();
-    
-    double annual = student.calculateAnnualPayment();
-    double semester = student.calculateSemesterPayment();
-    
-    foreColor(2);
-    gotoxy(65, 12); cout << "PAYMENT DETAILS FOR: " << student.getName();
-    gotoxy(65, 14); cout << "ID: " << student.getID();
-    
-    if (student.getScholarshipPercentage() > 0) {
-        gotoxy(65, 16); cout << "Scholarship: " << student.getScholarshipPercentage() << "%";
-        gotoxy(65, 17); cout << "Original Annual Tuition: $" << student.getTuition();
-        gotoxy(65, 18); cout << "After Scholarship: $" << annual * 2;
-    } else {
-        gotoxy(65, 16); cout << "Annual Tuition: $" << annual;
-    }
-    
-    gotoxy(65, 20); cout << "ANNUAL PAYMENT: $" << annual;
-    gotoxy(65, 21); cout << "SEMESTER PAYMENT: 2 x $" << semester << " = $" << semester * 2;
-    
-    gotoxy(65, 23); cout << "Semester payments include $10 processing fee per installment";
-    
-    gotoxy(65, 27); cout << "Press any key to continue...";
-    
-    getch();
-    MainMenu();
-}
-
-
-
-void NewStudent()
-{
-    int y = 0;
-    char option;
-    cls();
-    cover();
-    BoxPatient1();
-    foreColor(4);
-    ANT();
-    do
-    {
-        setcursor(false, 1);
-        foreColor(2);
-        foreColor(6);
-        gotoxy(76, 13);
-        cout << " REGISTER STUDENT";
-        gotoxy(76, 16);
-        cout << " VIEW STUDENTS";
-        gotoxy(76, 19);
-        cout << " SEARCH STUDENT";
-        gotoxy(76, 22);
-        cout << " UPDATE STUDENT";
-        gotoxy(76, 25);
-        cout << " DELETE STUDENT";
-        gotoxy(76, 28);
-        cout << " RETURN";
-        foreColor(9);
-        gotoxy(68, 32);
-        cout << "<<< USE UP AND DOWN ARROW KEY >>>";
-
-        if (y == 0)
-        {
-            foreColor(4);
-            gotoxy(76, 13);
-            cout << " REGISTER STUDENT";
-        }
-        if (y == 1)
-        {
-            foreColor(4);
-            gotoxy(76, 16);
-            cout << " VIEW STUDENTS";
-        }
-        if (y == 2)
-        {
-            foreColor(4);
-            gotoxy(76, 19);
-            cout << " SEARCH STUDENT";
-        }
-        if (y == 3)
-        {
-            foreColor(4);
-            gotoxy(76, 22);
-            cout << " UPDATE STUDENT";
-        }
-        if (y == 4)
-        {
-            foreColor(4);
-            gotoxy(76, 25);
-            cout << " DELETE STUDENT";
-        }
-        if (y == 5)
-        {
-            foreColor(4);
-            gotoxy(76, 28);
-            cout << " RETURN";
-        }
-        option = getch();
-        switch (option)
-        {
-        case 72:
-        {
-            y--;
-            if (y < 0)
-            {
-                y = 5;
-            }
-            break;
-        }
-        case 80:
-        {
-            y++;
-            if (y > 5)
-            {
-                y = 0;
-            }
-            break;
-        }
-        }
-    } while (option != 13);
-
-    do
-    {
-        switch (y)
-        {
-        case 0:
-            do
-            {
-                cls();
-                cover();
-                InsertStudent("Files\\NewStudents.bin", 1000, 0, 100);
-                cls();
-                cover();
-                chooseInsert();
-            } while (getch() != 27);
-            NewStudent();
-            break;
-        case 1:
-            cls();
-            cover();
-            styleViewPt();
-            ShowStudent("Files\\NewStudents.bin");
-            foreColor(2);
-            cout << "\n\n\n\n\t\t\t\t\t\t\t      <<<< Press Any Key back to [NEW STUDENTS] >>>>" << endl;
-            getch();
-            NewStudent();
-            break;
-        case 2:
-        {
-            do
-            {
-                cls();
-                cover();
-                ShowStudent("Files\\NewStudents.bin");
-                SearchStudent("Files\\NewStudents.bin");
-                cls();
-                cover();
-                chooseSearch();
-            } while (getch() != 27);
-            NewStudent();
-        }
-        break;
-        case 3:
-        {
-            do
-            {
-                cls();
-                cover();
-                ShowStudent("Files\\NewStudents.bin");
-                UpdateStudent("Files\\NewStudents.bin", 0, 100);
-                cls();
-                cover();
-                chooseUpdate();
-            } while (getch() != 27);
-            NewStudent();
-        }
-        break;
-        case 4:
-        {
-            do
-            {
-                cls();
-                cover();
-                ShowStudent("Files\\NewStudents.bin");
-                DeleteStudent("Files\\NewStudents.bin");
-                cls();
-                cover();
-                chooseDelete();
-            } while (getch() != 27);
-            NewStudent();
-        }
-        break;
-        case 5:
-        {
-            cls();
-            Registration();
-        }
-        break;
-        default:
-            cls();
-            break;
-        }
-
-    } while (1);
-}
-
-void Invoice()
-{
-    int y = 0;
-    char option;
-    cls();
-    cover();
-    BoxInvoice();
-    foreColor(8);
-    ANT();
-    do
-    {
-        setcursor(false, 1);
-        foreColor(2);
-        foreColor(6);
-        gotoxy(76, 13);
-        cout << "NEW STUDENTS";
-        gotoxy(76, 16);
-        cout << "RETURNING STUDENTS";
-        gotoxy(76, 19);
-        cout << "SCHOLARSHIP STUDENTS";
-        gotoxy(76, 22);
-        cout << "BACK TO MENU";
-        foreColor(9);
-        gotoxy(68, 29);
-        cout << "<<< USE UP AND DOWN ARROW KEY >>>";
-
-        if (y == 0)
-        {
-            foreColor(4);
-            gotoxy(76, 13);
-            cout << "NEW STUDENTS";
-        }
-        if (y == 1)
-        {
-            foreColor(4);
-            gotoxy(76, 16);
-            cout << "RETURNING STUDENTS";
-        }
-        if (y == 2)
-        {
-            foreColor(4);
-            gotoxy(76, 19);
-            cout << "SCHOLARSHIP STUDENTS";
-        }
-        if (y == 3)
-        {
-            foreColor(4);
-            gotoxy(76, 22);
-            cout << "BACK TO MENU";
-        }
-
-        option = getch();
-        switch (option)
-        {
-        case 72:
-        {
-            y--;
-            if (y < 0)
-            {
-                y = 3;
-            }
-            break;
-        }
-        case 80:
-        {
-            y++;
-            if (y > 3)
-            {
-                y = 0;
-            }
-            break;
-        }
-        }
-    } while (option != 13);
-
-    do
-    {
-        switch (y)
-        {
-        case 0:
-            do
-            {
-                cls();
-                cover();
-                ShowStudent("Files\\NewStudents.bin");
-                invoiceTemplate("Files\\NewStudents.bin");
-                cls();
-                cover();
-                chooseSearch();
-            } while (getch() != 27);
-            Invoice();
-            break;
-        case 1:
-            do
-            {
-                cls();
-                cover();
-                ShowStudent("Files\\ReturningStudents.bin");
-                invoiceTemplate("Files\\ReturningStudents.bin");
-                cls();
-                cover();
-                chooseSearch();
-            } while (getch() != 27);
-            Invoice();
-            break;
-        case 2:
-            do
-            {
-                cls();
-                cover();
-                ShowStudent("Files\\ScholarshipStudents.bin");
-                invoiceTemplate("Files\\ScholarshipStudents.bin");
-                cls();
-                cover();
-                chooseSearch();
-            } while (getch() != 27);
-            Invoice();
-            break;
-        case 3:
-            MainMenu();
-            break;
-        default:
-            cls();
-            break;
-        }
-
-    } while (1);
 }
 
 void ABOUTUS()
@@ -1123,36 +679,31 @@ void ABOUTUS()
     styleAboutMe();
     foreColor(9);
     gotoxy(39, 12);
-    cout << "-    Topic : ";
+    cout << "-    Topic       : ";
     foreColor(7);
-    gotoxy(55, 12);
+    gotoxy(62, 12);
     cout << "Student Management System.";
     foreColor(9);
     gotoxy(39, 14);
-    cout << "-    Member : ";
+    cout << "-    Member      : ";
     foreColor(7);
-    gotoxy(55, 14);
+    gotoxy(62, 14);
     cout << "Tourn Vuthy, Den Sopheak, Bai Kimhouy.";
     foreColor(9);
     foreColor(9);
     gotoxy(39, 16);
-    cout << "-    Instructor : ";
+    cout << "-    Instructor   : ";
     foreColor(7);
-    gotoxy(55, 16);
+    gotoxy(62, 16);
     cout << "Leang Panhra";
-    // gotoxy(39, 18);
-    // cout << "     Mentor 2 : ";
-    // foreColor(7);
-    // gotoxy(55, 18);
-    // cout << "Mr. San Moniakkhara.";
     foreColor(4);
     gotoxy(39, 20);
     cout << "-    We're students at Western University, subject in";
     gotoxy(39, 22);
-    cout << "     Algorithms and Data Structure ";
+    cout << "-     Algorithms and Data Structure ";
     gotoxy(39, 24);
-    cout << "     Thank you so much for using this system!! Hope it works well.";
-    foreColor(7);
+    cout << "-     Thank you so much for using this system!! Hope it works well.";
+    foreColor(6);
     gotoxy(65, 34);
     cout << "<<<< Press Any Key back to [MENU] >>>>" << endl;
     getch();

@@ -150,6 +150,47 @@ DrawRectangle(65, 31, 38, 1, 4);
 
 }
 
+void BoxDisplayInvoicePayment()
+{
+				gotoxy(65, 4); foreColor(1); cout<<" ____  _  _  _  _  _____  ____  ___  ____"; 
+				gotoxy(65, 5); foreColor(1); cout<<"(_  _)( \\( )( \\/ )(  _  )(_  _)/ __)( ___)"; 
+				gotoxy(65, 6); foreColor(2); cout<<" _)(_  )  (  \\  /  )(_)(  _)(_( (__  )__)"; 
+				gotoxy(65, 7); foreColor(2); cout<<"(____)(_)\\_)  \\/  (_____)(____)\\___)(____)"; 
+				HLine(65, 8, 42, 9, 205);
+				DrawRectangle(22, 9, 126, 24,5);
+				
+				foreColor(2); gotoxy(26, 11); cout<<"STUDENT DETAILS:";
+//				HLine(26, 11, 15, 4, 205);
+				DrawRectangle(26, 12, 118, 3,6);
+
+				HLine(26, 14, 118, 6, 205);
+				HLine(26, 16, 118, 6, 205);
+				
+				VLine(45, 11, 1, 6, 203);
+				VLine(45, 12, 4, 6, 186);
+				// VLine(45, 17, 1, 6, 202);
+				
+				VLine(90, 11, 1, 6, 203);
+				VLine(90, 12, 4, 6, 186);
+				// VLine(90, 17, 1, 6, 202);
+				
+				VLine(120, 11, 1, 6, 203);
+				VLine(120, 12, 4, 6, 186);
+				// VLine(120, 17, 1, 6, 202);
+				DrawRectangle(26, 20, 118, 9, 3); 
+				HLine(26, 22, 118, 3, 205);
+				HLine(26, 26, 118, 3);
+				VLine(34, 19, 1, 3, 203);
+				VLine(34, 20, 9, 3, 186);
+				VLine(34, 29, 1, 3, 202);
+				
+				VLine(123, 19, 1, 3, 203);
+				VLine(123, 20, 9, 3, 186);
+				VLine(123, 29, 1, 3, 202);
+				
+				DrawRectangle(123, 30, 21, 1, 3);
+}
+
 void BoxDisplayInvoice()
 {
 				gotoxy(65, 4); foreColor(1); cout<<" ____  _  _  _  _  _____  ____  ___  ____"; 
@@ -170,13 +211,13 @@ void BoxDisplayInvoice()
 				VLine(45, 12, 5, 6, 186);
 				VLine(45, 17, 1, 6, 202);
 				
-				VLine(100, 11, 1, 6, 203);
-				VLine(100, 12, 5, 6, 186);
-				VLine(100, 17, 1, 6, 202);
+				VLine(90, 11, 1, 6, 203);
+				VLine(90, 12, 5, 6, 186);
+				VLine(90, 17, 1, 6, 202);
 				
-				VLine(120, 11, 1, 6, 203);
-				VLine(120, 12, 5, 6, 186);
-				VLine(120, 17, 1, 6, 202);
+				VLine(110, 11, 1, 6, 203);
+				VLine(110, 12, 5, 6, 186);
+				VLine(110, 17, 1, 6, 202);
 				DrawRectangle(26, 20, 118, 9, 3); 
 				HLine(26, 22, 118, 3, 205);
 				HLine(26, 26, 118, 3);
@@ -206,7 +247,7 @@ void BoxDisplayScholarship() {
 
     // Horizontal lines
     // HLine(26, 11, 118, 6, 205);
-    HLine(26, 11, 118, 6, 205);
+    HLine(26, 14, 118, 6, 205);
     
     // Vertical dividers
     VLine(45, 11, 1, 6, 203);
@@ -1272,7 +1313,7 @@ void welcomeFtLoading()
 		delay(30);
 	}
 	gotoxy(78,29); foreColor(5); cout<<"C O M P L E T E";
-	delay(1500);
+	delay(1000);
 	system("cls");	
 }
 

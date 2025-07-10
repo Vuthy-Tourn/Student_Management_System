@@ -1,0 +1,1 @@
+invoiceTemplate("Files\\NewStudents.bin");

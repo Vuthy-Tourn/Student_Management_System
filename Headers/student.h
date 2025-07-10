@@ -549,12 +549,11 @@ int countStudents(){
 	return count; 
 }
 
-void invoiceTemplate(string path){
+void invoiceTemplate(string path, int stuId){
 	setcursor(true, 1);
 	int y = 17; 
 	int count = 0; 
-	SYSTEMTIME currentTime;
-    GetLocalTime(&currentTime);
+	
 	
 	if(path == "Files\\NewStudents.bin"){
 		count += countStudents();
@@ -571,35 +570,60 @@ void invoiceTemplate(string path){
 	}
 	else
 	{
-		int tempId;
-		drawBoxSingleLine(60, 4, 46, 1, 3);
-		gotoxy(61, 5); foreColor(14);
-		cout<<"Enter ID you want to view Invoice : "; 
-		gotoxy(97, 5); tempId = inputNumber();
 		setcursor(false, 1);
 		fileStudent.read((char*)&st,sizeof(st));
 		while(!fileStudent.eof())
 		{
 			count++; 
-			if(tempId == st.getID())
+			if(stuId == st.getID())
 			{
 				ClearBG();
 				cover(); 
 				BoxDisplayInvoice();
-                double total = st.getTuition() * (100 - st.getScholarshipPercentage()) / 100;
+                double percentage = st.getScholarshipPercentage();
+                time_t timestamp = time(NULL);
+                struct tm datetime = *localtime(&timestamp);
+                // Calculate payment amounts
+                double baseAmount = st.getTuition();
+                double discount = 0;
+                double processingFee = 0;
+                
+                if(percentage > 0) {
+                    discount = baseAmount * percentage / 100;
+                    baseAmount -= discount;
+                }
+
+                if(strcmp(st.getPaymentPlan(), "Semester") == 0) {
+                    baseAmount /= 2;
+                    // processingFee = 10.00;
+                }
 				foreColor(2);
-				gotoxy(28, 13); cout<<"Student ID  "; gotoxy(50, 13); cout<<st.getID(); 
-				gotoxy(105, 13); cout<<"Invoice ID "; gotoxy(125, 13); cout<<"YTT-123-00"<<count++; 
-				gotoxy(28, 15); cout<<"Student Name "; gotoxy(50, 15); cout<<st.getName(); 
-				gotoxy(105, 15); cout<<"Address "; gotoxy(125, 15); cout<<st.getAdd(); 
-				gotoxy(28, 17); cout<<"Age "; gotoxy(50, 17); cout<<st.getAge()<<" year"; 
-				gotoxy(105, 17); cout<<"Date "; gotoxy(125, 17); cout<<st.getDate();
+                // Student Information 
+				gotoxy(28, 13); cout<<"Invoice ID "; gotoxy(50, 13); cout<<"YTT-123-00"<<count++;  
+				gotoxy(90, 13); cout << "Invoice Date:"; gotoxy(117, 13); cout << asctime(&datetime);
+				gotoxy(28, 15); cout<<"Student ID  "; gotoxy(50, 15); cout<<st.getID();  
+				gotoxy(90, 15); cout<<"Student Name "; gotoxy(117, 15); cout<<st.getName(); 
+				gotoxy(28, 17); cout<<"Program "; gotoxy(50, 17); cout<<st.getProgram(); 
+				gotoxy(90, 17); cout<<"Address "; gotoxy(117, 17); cout<<st.getAdd();  
 			
-				foreColor(2); gotoxy(29, 21); cout<<"NO"; gotoxy(38, 21); cout<<"Descristion"; gotoxy(131, 21); cout<<"Price"; 
-				foreColor(2); gotoxy(29, 24); cout<<"1"; gotoxy(38, 24); cout<<st.getProgram(); gotoxy(131, 24); cout<<"$"<<st.getTuition(); 
-				foreColor(2); gotoxy(29, 28); cout<<"2"; gotoxy(38, 28); cout<<"Scholarship"; gotoxy(131, 28); cout<<"%"<<st.getScholarshipPercentage(); 
-				gotoxy(124, 31); cout<<"Total : $"<<total; 
-				gotoxy(0, 32); cout<<"\n\n\n\n\t\t\t\t\t\t\t\t\t <<< Press to Continue >>>";
+				foreColor(2); gotoxy(29, 21); cout<<"NO"; gotoxy(38, 21); cout<<"Description"; gotoxy(131, 21); cout<<"Price"; 
+				foreColor(2); gotoxy(29, 24); cout<<"1"; gotoxy(38, 24); cout<<st.getPaymentPlan()<< " Payment"; gotoxy(131, 24); cout<<"$"<< baseAmount; 
+				foreColor(2);  if(percentage > 0) {
+                gotoxy(29, 28); cout << "2";
+                gotoxy(38, 28); cout << "Scholarship (" << percentage << "%)"; 
+                gotoxy(131, 28); cout << "-$" << discount;
+                 }
+				gotoxy(124, 31); cout<<"Total : $"<<baseAmount; 
+
+                    // Payment terms
+                foreColor(14);
+                gotoxy(28, 36); cout << "Noted: ";
+                if(strcmp(st.getPaymentPlan(), "Semester") == 0) {
+                    cout << "Second payment of $" << baseAmount << " due next semester";
+                } else {
+                    cout << "Full annual payment";
+                }
+				gotoxy(0, 37); cout<<"\n\n\n\n\t\t\t\t\t\t\t\t\t <<< Press to Continue >>>";
 				getch();
 				found = true;
 				break; 
@@ -616,91 +640,6 @@ void invoiceTemplate(string path){
 	}
 	fileStudent.close();
 }
-
-void GeneratePaymentInvoice(Student& student) {
-    cls();
-    cover();
-    
-    // Payment Invoice Header
-    gotoxy(65, 4); foreColor(1); cout<<" ____  _____  _  _  ____  _____  ____  _____"; 
-    gotoxy(65, 5); foreColor(1); cout<<"(  _ \\(  _  )( \\( )(  _ \\(  _  )(_  _)(  _  )"; 
-    gotoxy(65, 6); foreColor(2); cout<<" )___/ )(_)(  )  (  )   / )(_)(  _)(_  )(_)( "; 
-    gotoxy(65, 7); foreColor(2); cout<<"(__)  (_____)(_)\\_)(_)\\_)(_____)(____)(_____)"; 
-    HLine(65, 8, 42, 9, 205);
-    DrawRectangle(22, 9, 126, 24, 5);
-    
-    // Current date
-    SYSTEMTIME st;
-    GetLocalTime(&st);
-    char dateStr[11];
-    sprintf(dateStr, "%02d-%02d-%04d", st.wDay, st.wMonth, st.wYear);
-
-    // Student Information
-    foreColor(2);
-    gotoxy(26, 11); cout<<"STUDENT INFORMATION:";
-    DrawRectangle(26, 12, 118, 5, 6);
-    
-    gotoxy(28, 13); cout<<"ID:"; gotoxy(40, 13); cout<<student.getID();
-    gotoxy(60, 13); cout<<"Name:"; gotoxy(80, 13); cout<<student.getName();
-    gotoxy(28, 15); cout<<"Program:"; gotoxy(40, 15); cout<<student.getProgram();
-    gotoxy(60, 15); cout<<"Date:"; gotoxy(80, 15); cout<<dateStr;
-
-    // Payment Details
-    foreColor(3);
-    gotoxy(26, 18); cout<<"PAYMENT DETAILS:";
-    DrawRectangle(26, 19, 118, 10, 3);
-    
-    // Calculate amounts
-    double baseAmount = student.getTuition();
-    double discount = 0;
-    double finalAmount = baseAmount;
-    
-    if(student.getScholarshipPercentage() > 0) {
-        discount = baseAmount * student.getScholarshipPercentage() / 100;
-        baseAmount -= discount;
-    }
-    
-    double processingFee = 0;
-    if(strcmp(student.getPaymentPlan(), "Semester") == 0) {
-        baseAmount /= 2;
-        processingFee = 10.00;
-    }
-    finalAmount = baseAmount + processingFee;
-    
-    // Payment Items
-    foreColor(2);
-    gotoxy(28, 21); cout<<"1. Tuition Fee:"; gotoxy(60, 21); cout<<"$" << baseAmount;
-    
-    if(student.getScholarshipPercentage() > 0) {
-        gotoxy(28, 22); cout<<"  Scholarship ("<<student.getScholarshipPercentage()<<"%):"; 
-        gotoxy(60, 22); cout<<"-$" << discount;
-    }
-    
-    if(processingFee > 0) {
-        gotoxy(28, 23); cout<<"2. Processing Fee:"; gotoxy(60, 23); cout<<"$" << processingFee;
-    }
-    
-    // Total
-    foreColor(10);
-    gotoxy(28, 25); cout<<"TOTAL PAYMENT:"; 
-    gotoxy(60, 25); cout<<"$" << finalAmount;
-    
-    // Payment Plan Info
-    foreColor(6);
-    gotoxy(28, 27); cout<<"Payment Plan: " << student.getPaymentPlan();
-    if(strcmp(student.getPaymentPlan(), "Semester") == 0) {
-        gotoxy(28, 28); cout<<"Note: Second payment of $" << finalAmount << " due next semester";
-    }
-    
-    // Footer
-    foreColor(8);
-    gotoxy(28, 30); cout<<"Thank you for your payment!";
-    gotoxy(28, 31); cout<<"Payment receipt will be emailed to you.";
-    
-    gotoxy(0, 35); cout<<"\n\n\n\t\t\t\t\t\t\t\t <<< Press any key to continue >>>";
-    getch();
-}
-
 
 int countTotalStudents(string fileName_Path) 
 {
