@@ -1,11 +1,3 @@
-/*
-	Name: antheaderInput.h
-	Copyright: ANT Technoloy Training Center
-	Author: Hinsy Lasong
-	Date: 30/06/21 15:59
-	Description: this header file describe about create own input function
-*/
-
 #ifndef ___ANTHEADERINPU_H___
 #define ___ANTHEADERINPU_H___
 //////////////////////////////////////////////////////////////////////////////////

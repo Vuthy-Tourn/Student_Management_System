@@ -420,7 +420,7 @@ drawBoxDoubleLineWithBG(64, 28, 41, 1, 5);
 	drawBoxDoubleLineWithBG(120, 5, 1, 28, 7);
 }
 
-void BoxStaff()
+void Box2()
 {
 	gotoxy(67,6); foreColor(2); cout<<" _____  ____  _____  _____  _____ ";
 	gotoxy(67,7); foreColor(3); cout<<"/  ___>/    \\/  _  \\/   __\\/   __\\";
@@ -433,9 +433,6 @@ void BoxStaff()
 	drawBoxDoubleLineWithBG(68, 12, 33, 1, 9);
 	drawBoxDoubleLineWithBG(68, 15, 33, 1, 9);
 	drawBoxDoubleLineWithBG(68, 18, 33, 1, 9);
-	drawBoxDoubleLineWithBG(68, 21, 33, 1, 9);
-	drawBoxDoubleLineWithBG(68, 24, 33, 1, 9);
-	drawBoxDoubleLineWithBG(68, 27, 33, 1, 9);
 	
 	// left
 	drawBoxDoubleLineWithBG(60, 17, 1, 4, 1);
@@ -455,7 +452,7 @@ void BoxStaff()
 	drawBoxDoubleLineWithBG(120, 5, 1, 28, 7);
 }
 
-void BoxPatient1()
+void Box1()
 {
 	gotoxy(64,6); foreColor(2); cout<<" ____   __   ____  ____  ____  _  _  ____";
 	gotoxy(64,7); foreColor(3); cout<<"(  _ \\ /__\\ (_  _)(_  _)( ___)( \\( )(_  _)";
@@ -470,7 +467,7 @@ void BoxPatient1()
 	drawBoxDoubleLineWithBG(68, 18, 33, 1, 9);
 	drawBoxDoubleLineWithBG(68, 21, 33, 1, 9);
 	drawBoxDoubleLineWithBG(68, 24, 33, 1, 9);
-	drawBoxDoubleLineWithBG(68, 27, 33, 1, 9);
+	
 	
 	// left
 	drawBoxDoubleLineWithBG(60, 17, 1, 4, 1);
@@ -1375,6 +1372,24 @@ void cover()
 	VLine(168, 2, 35, 9, 179);
 	VLine(168, 1, 1, 9, 191);
 	VLine(168, 37, 1, 9, 217);	
+}
+
+void studentViewCover()
+{
+	// Top
+	gotoxy(4,1); foreColor(4);
+
+	HLine(4, 2, 180, 9, 196);
+	// Bottom	
+	HLine(4, 38, 180, 9, 196);
+	// left
+	VLine(4, 2, 35, 9, 179);
+	VLine(4, 1, 1, 9, 218);
+	VLine(4, 37, 1, 9, 192);
+	// Right
+	VLine(185, 2, 35, 9, 179);
+	VLine(185, 1, 1, 9, 191);
+	VLine(185, 37, 1, 9, 217);	
 }
 
 void Clearloading()

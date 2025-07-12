@@ -210,21 +210,63 @@ public:
         additionalFees = inputFloat();
     }
 
-    void Display(int y)
-    {
-        drawBoxSingleLine(13, y, 145, 1, 5);
-        foreColor(6);
-        gotoxy(16, y + 1);
-        cout << left << setw(10) << id << setw(20) << name << setw(10) << gender << setw(8) << age << setw(15) << date << setw(18) << program << setw(14) << tuition << setw(14) << scholarshipPercentage << setw(14) <<(tuition * (100 - scholarshipPercentage) / 100) << setw(15) << phoneNumber << setw(15) << address ;
-    }
+  void Display(int y) {
+    drawBoxSingleLine(8, y, 173, 1, 5);
+    foreColor(6);
+    gotoxy(10, y + 1);
+    
+    // Calculate payment amounts
+    double discountedTuition = tuition * (100 - scholarshipPercentage) / 100;
+    double currentPayment = (strcmp(paymentPlan, "Semester") == 0) ? 
+                          (discountedTuition / 2) : discountedTuition;
+    double nextPayment = (strcmp(paymentPlan, "Semester") == 0) ? 
+                       (discountedTuition / 2) : 0.00;
 
-    void Header(int y)
-    {
-        DrawRectangle(13, y - 1, 145, 1, 2);
-        foreColor(4);
-        gotoxy(16, y);
-        cout << left << setw(10) << "ID" << setw(20) << "Name" << setw(10) << "Gender" << setw(8) << "Age" << setw(15) << "Date of Birth" << setw(18) << "Program" << setw(14) << "Tuition($)" << setw(14) << "Scholarship(%)"<< setw(14) << "After Discount($)" << setw(15) << "Phone Number" << setw(15) << "Address";
+    cout << left 
+         << setw(10) << id 
+         << setw(15) << name 
+         << setw(12) << gender 
+         << setw(8) << age 
+         << setw(15) << date 
+         << setw(15) << program <<"$"
+         << setw(10) << fixed << setprecision(0) << tuition <<"%"
+         << setw(15) << scholarshipPercentage <<"$"
+         << setw(10) << fixed << setprecision(0) << discountedTuition
+         << setw(12) << paymentPlan <<"$"
+         << setw(10) << fixed << setprecision(0) << currentPayment <<"$";
+    
+    if (strcmp(paymentPlan, "Semester") == 0) {
+        cout << setw(10) << fixed << setprecision(0) << nextPayment;
+    } else {
+        cout << setw(10) << "-";
     }
+    
+    cout << setw(17) << phoneNumber 
+         << setw(7) << address;
+}
+
+void Header(int y) {
+    DrawRectangle(8, y - 1, 173, 1, 2);
+    foreColor(4);
+    gotoxy(10, y);
+    cout << left 
+         << setw(10) << "ID" 
+         << setw(15) << "Name" 
+         << setw(12) << "Gender" 
+         << setw(8) << "Age" 
+         << setw(15) << "Birth Date" 
+         << setw(15) << "Program" 
+         << setw(10) << "Tuition" 
+         << setw(15) << "Scholarship"
+         << setw(15) << "After Disc"
+         << setw(8) << "Plan"
+         << setw(12) << "Current"
+         << setw(13) << "Next"
+         << setw(15) << "Phone" 
+         << setw(7) << "Address";
+}
+
+
 
     int getID()
     {
@@ -630,7 +672,8 @@ void invoiceTemplate(string path, int stuId){
 			}
 			fileStudent.read((char*)&st,sizeof(st));
 		}
-		if(found == false)
+		
+        if(found == false)
 		{
 			cover();
 			ClearBG();
@@ -776,6 +819,79 @@ void ScholarshipApplicationTemplate(int studentId, int percentage, int durationY
     gotoxy(0, 37); cout << "\n\n\n\n\t\t\t\t\t\t\t\t\t <<< Press any key to continue >>>";
     getch();
 }
+
+void SavePaymentReceipt(int studentId, Student& student) {
+    ofstream receipt("Payment_Receipts.txt", ios::app);
+    if(receipt) {
+        SYSTEMTIME st;
+        GetLocalTime(&st);
+        char dateStr[11];
+        sprintf(dateStr, "%02d-%02d-%04d", st.wDay, st.wMonth, st.wYear);
+        char timeStr[9];
+        sprintf(timeStr, "%02d:%02d:%02d", st.wHour, st.wMinute, st.wSecond);
+
+        // Calculate payment amounts
+        double baseAmount = student.getTuition();
+        double discount = 0;
+        double processingFee = 0;
+        bool isSemester = (strcmp(student.getPaymentPlan(), "Semester") == 0);
+        
+        if(student.getScholarshipPercentage() > 0) {
+            discount = baseAmount * student.getScholarshipPercentage() / 100;
+            baseAmount -= discount;
+        }
+        
+        if(isSemester) {
+            baseAmount /= 2;
+        }
+
+        // Receipt Header
+        receipt << "======================================================\n";
+        receipt << "|                SCHOOL PAYMENT RECEIPT              |\n";
+        receipt << "======================================================\n";
+        receipt << "| Date: " << dateStr << "   Time: " << timeStr << "   Receipt No: " << studentId << "\n";
+        receipt << "|----------------------------------------------------\n";
+        
+        // Student Information
+        receipt << "| STUDENT INFORMATION:\n";
+        receipt << "| ID: " << studentId << "\n";
+        receipt << "| Name: " << student.getName() << "\n";
+        receipt << "| Program: " << student.getProgram() << "\n";
+        receipt << "|----------------------------------------------------\n";
+        
+        // Payment Details
+        receipt << "| PAYMENT DETAILS:\n";
+        receipt << "| Plan: " << student.getPaymentPlan() << "\n";
+        if(student.getScholarshipPercentage() > 0) {
+            receipt << "| Scholarship: " << student.getScholarshipPercentage() << "%\n";
+        }
+        receipt << "|----------------------------------------------------\n";
+        
+        // Payment Breakdown
+        receipt << "| ITEM                     AMOUNT ($)\n";
+        receipt << "| ------------------------ -----------\n";
+        receipt << "| Tuition Fee              " << right << setw(10) << fixed << setprecision(2) << baseAmount << "\n";
+        
+        if(student.getScholarshipPercentage() > 0) {
+            receipt << "| Scholarship Discount    " << right << setw(10) << fixed << setprecision(2) << -discount << "\n";
+        }
+        
+        receipt << "| ------------------------ -----------\n";
+        receipt << "| TOTAL PAYMENT           " << right << setw(10) << fixed << setprecision(2) << baseAmount << "\n";
+        receipt << "|----------------------------------------------------\n";
+        
+        // Payment Notes
+        if(isSemester) {
+            receipt << "| NOTE: Second payment of $" << fixed << setprecision(2) << baseAmount << "\n";
+        }
+        receipt << "|\n";
+        receipt << "| Thank you for your payment!\n";
+        receipt << "======================================================\n\n";
+        
+        receipt.close();
+    }
+}
+
 
 char* inputLetter(char* charArray, int n)
 {

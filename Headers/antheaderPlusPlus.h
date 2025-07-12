@@ -12,14 +12,6 @@
 #include<conio.h>
 #include<iomanip>
 using namespace std;
-/*void swap(int (*a)[2], int (*b)[2])
-{
-    int temp[sizeof(*a)/sizeof((*a)[0])];
-    memcpy(temp,a,sizeof(temp));
-    memcpy(a,b,sizeof(*a));
-    memcpy(b,temp,sizeof(*b));
-}*/
-
 
 void delay(int milliseconds)
 {

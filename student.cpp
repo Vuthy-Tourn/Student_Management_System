@@ -11,11 +11,8 @@ void Login();
 void MainMenu();
 void StudentManagement();
 void Registration();
-// void ReturningStudent();
-// void ScholarshipStudents();
 void ApplyForScholarship();
 void ProcessStudentPayment();
-void IncomeAndExpense();
 void ABOUTUS();
 
 int main()
@@ -298,7 +295,7 @@ void StudentManagement(){
     char option;
     cls();
     cover();
-    BoxPatient1();
+    Box1();
     foreColor(4);
     ANT();
     do
@@ -380,7 +377,7 @@ void StudentManagement(){
         {
         case 0:
             cls();
-            cover();
+            studentViewCover();
             styleViewPt();
             ShowStudent("Files\\NewStudents.bin");
             foreColor(2);
@@ -393,7 +390,7 @@ void StudentManagement(){
             do
             {
                 cls();
-                cover();
+                studentViewCover();
                 ShowStudent("Files\\NewStudents.bin");
                 SearchStudent("Files\\NewStudents.bin");
                 cls();
@@ -408,7 +405,7 @@ void StudentManagement(){
             do
             {
                 cls();
-                cover();
+                studentViewCover();
                 ShowStudent("Files\\NewStudents.bin");
                 UpdateStudent("Files\\NewStudents.bin", 0, 100);
                 cls();
@@ -423,7 +420,7 @@ void StudentManagement(){
             do
             {
                 cls();
-                cover();
+                studentViewCover();
                 ShowStudent("Files\\NewStudents.bin");
                 DeleteStudent("Files\\NewStudents.bin");
                 cls();
@@ -493,7 +490,7 @@ void ApplyForScholarship() {
         char option;
         cls();
         cover();
-        BoxPatient();
+        Box1();
         
         do {
             setcursor(false, 1);
@@ -513,7 +510,7 @@ void ApplyForScholarship() {
             if(y == 1) { foreColor(4); gotoxy(76, 16); cout << "50% Scholarship"; }
             if(y == 2) { foreColor(4); gotoxy(76, 19); cout << "75% Scholarship"; }
             if(y == 3) { foreColor(4); gotoxy(76, 22); cout << "100% Scholarship"; }
-            if(y == 4) { foreColor(4); gotoxy(76, 25); cout << "BACK TO MENU"; }
+            if(y == 4) { foreColor(4); gotoxy(76, 29); cout << "BACK TO MENU"; }
 
             option = getch();
             if(option == 72) y--; // Up arrow
@@ -537,7 +534,7 @@ void ApplyForScholarship() {
         DURATION_SELECTION:
         cls();
         cover();
-        BoxPatient();
+        Box2();
         
         int y_duration = 0;
         do {
@@ -548,7 +545,7 @@ void ApplyForScholarship() {
             gotoxy(70, 19); cout << "BACK TO PERCENTAGE SELECTION";
             
             foreColor(9);
-            gotoxy(68, 29);
+            gotoxy(68, 32);
             cout << "<<< USE UP AND DOWN ARROW KEY >>>";
 
             // Highlight selected option
@@ -576,15 +573,6 @@ void ApplyForScholarship() {
     // Show the beautiful template
     ScholarshipApplicationTemplate(studentId, selectedPercentage, durationYears);
     
-    // Optional: Save to file
-    ofstream receipt("Scholarship_Receipts.txt", ios::app);
-    if(receipt) {
-        receipt << "Scholarship Approved for ID: " << studentId << endl;
-        receipt << "Percentage: " << selectedPercentage << "%" << endl;
-        receipt << "Duration: " << durationYears << " years" << endl;
-        // receipt << "Date: " << dateStr << endl << endl;
-        receipt.close();
-    }
     }
 }
 
@@ -614,7 +602,7 @@ void ProcessStudentPayment() {
     // Payment plan selection
     cls();
     cover();
-    BoxStaff();
+    Box2();
     
     int y = 0;
     char option;
@@ -625,6 +613,9 @@ void ProcessStudentPayment() {
         gotoxy(76, 13); cout << "ANNUAL PAYMENT";
         gotoxy(76, 16); cout << "SEMESTER PAYMENT";
         gotoxy(76, 19); cout << "BACK TO MENU";
+        foreColor(9);
+            gotoxy(68, 32);
+            cout << "<<< USE UP AND DOWN ARROW KEY >>>";
         
         // Highlight selected option
         if (y == 0) { foreColor(4); gotoxy(76, 13); cout << "ANNUAL PAYMENT"; }
@@ -645,6 +636,7 @@ void ProcessStudentPayment() {
                student.setPaymentPlan("Annual");
                     UpdateStudentRecord(student);
                     invoiceTemplate("Files\\NewStudents.bin", studentId);
+                    SavePaymentReceipt(studentId, student);
                     cls();
                     cover();
                chooseView();
@@ -657,6 +649,7 @@ void ProcessStudentPayment() {
                student.setPaymentPlan("Semester");
                     UpdateStudentRecord(student);
                     invoiceTemplate("Files\\NewStudents.bin", studentId);
+                    SavePaymentReceipt(studentId, student);
                     cls();
                     cover();
                chooseView();
