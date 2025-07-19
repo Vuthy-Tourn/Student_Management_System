@@ -29,7 +29,7 @@ private:
 public:
     void Input(int minAge = 0, int maxAge = 100)
     {
-        BoxInputPatient();
+        BoxInputStudent();
         foreColor(6);
         gotoxy(124, 18);
         foreColor(3);
@@ -441,7 +441,7 @@ void SearchStudent(string fileName_Path)
                 ClearBG();
                 gotoxy(77, 5);
                 foreColor(3);
-                styleSearchPt();
+                styleViewSt();
                 st.Header(y);
                 st.Display(y + 2);
                 foreColor(3);

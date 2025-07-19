@@ -18,9 +18,9 @@ void ABOUTUS();
 int main()
 {
     setcursor(false, 1);
-    // Loading();
+    Loading();
 
-    // Login();
+    Login();
     MainMenu();
     getch();
     return 0;
@@ -141,7 +141,7 @@ void MainMenu()
     cls();
     cover();
     foreColor(1);
-    ANT();
+    WU();
     BoxMenu();
     do
     {
@@ -295,9 +295,9 @@ void StudentManagement(){
     char option;
     cls();
     cover();
-    Box1();
+    BoxStudent();
     foreColor(4);
-    ANT();
+    WU();
     do
     {
         setcursor(false, 1);
@@ -378,7 +378,7 @@ void StudentManagement(){
         case 0:
             cls();
             studentViewCover();
-            styleViewPt();
+            styleViewSt();
             ShowStudent("Files\\NewStudents.bin");
             foreColor(2);
             cout << "\n\n\n\n\t\t\t\t\t\t\t      <<<< Press Any Key back to [STUDENT MENU] >>>>" << endl;
@@ -469,7 +469,7 @@ void ApplyForScholarship() {
     // Get student ID
     setcursor(true, 1);
     drawBoxSingleLine(60, 17, 46, 1, 3);
-    styelIncomeAndExpense();
+    styleStudentId();
     gotoxy(61, 18); foreColor(14);
     cout << "Enter Student ID for Scholarship: ";
     gotoxy(97, 18); studentId = inputNumber(); 
@@ -490,7 +490,7 @@ void ApplyForScholarship() {
         char option;
         cls();
         cover();
-        Box1();
+        BoxScholarship();
         
         do {
             setcursor(false, 1);
@@ -510,7 +510,7 @@ void ApplyForScholarship() {
             if(y == 1) { foreColor(4); gotoxy(76, 16); cout << "50% Scholarship"; }
             if(y == 2) { foreColor(4); gotoxy(76, 19); cout << "75% Scholarship"; }
             if(y == 3) { foreColor(4); gotoxy(76, 22); cout << "100% Scholarship"; }
-            if(y == 4) { foreColor(4); gotoxy(76, 29); cout << "BACK TO MENU"; }
+            if(y == 4) { foreColor(4); gotoxy(76, 25); cout << "BACK TO MENU"; }
 
             option = getch();
             if(option == 72) y--; // Up arrow
@@ -534,7 +534,7 @@ void ApplyForScholarship() {
         DURATION_SELECTION:
         cls();
         cover();
-        Box2();
+        BoxScholarship();
         
         int y_duration = 0;
         do {
@@ -584,7 +584,7 @@ void ProcessStudentPayment() {
     // Get student ID
     setcursor(true, 1);
     drawBoxSingleLine(60, 17, 46, 1, 3);
-    styelIncomeAndExpense();
+    styleStudentId();
     gotoxy(61, 18); foreColor(14);
     cout << "Enter Student ID for Payment: ";
     gotoxy(95, 18); studentId = inputNumber(); 
@@ -602,7 +602,7 @@ void ProcessStudentPayment() {
     // Payment plan selection
     cls();
     cover();
-    Box2();
+    BoxPayment();
     
     int y = 0;
     char option;
